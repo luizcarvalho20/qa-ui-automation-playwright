@@ -1,33 +1,41 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import { CartPage } from '../pages/CartPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  const loginPage = new LoginPage(page);
+
+  await loginPage.goto();
+  await loginPage.login();
 });
 
 test('deve finalizar checkout com sucesso', async ({ page }) => {
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
 
-  await page.locator('[data-test="firstName"]').fill('Luiz');
-  await page.locator('[data-test="lastName"]').fill('Carvalho');
-  await page.locator('[data-test="postalCode"]').fill('36420-000');
-  await page.locator('[data-test="continue"]').click();
-  await page.locator('[data-test="finish"]').click();
+  await inventoryPage.addBackpackToCart();
+  await inventoryPage.openCart();
+  await cartPage.goToCheckout();
+  await checkoutPage.fillCheckoutForm();
+  await checkoutPage.continue();
+  await checkoutPage.finish();
 
-  await expect(page.locator('[data-test="complete-header"]')).toHaveText('Thank you for your order!');
+  await expect(checkoutPage.getSuccessMessage()).toHaveText('Thank you for your order!');
 });
 
-test('deve exibir erro ao tentar continuar checkout sem preencher os dados obrigatorios', async ({ page }) => {
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
+test('deve exibir erro ao tentar continuar checkout sem preencher os dados obrigatórios', async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
 
-  await page.locator('[data-test="continue"]').click();
+  await inventoryPage.addBackpackToCart();
+  await inventoryPage.openCart();
+  await cartPage.goToCheckout();
+  await checkoutPage.continue();
 
-  await expect(page.locator('[data-test="error"]')).toBeVisible();
-  await expect(page.locator('[data-test="error"]')).toContainText('Error');
+  await expect(checkoutPage.getErrorMessage()).toBeVisible();
+  await expect(checkoutPage.getErrorMessage()).toContainText('Error');
 });
