@@ -14,11 +14,19 @@ A proposta deste repositório é construir uma base sólida de automação UI co
 - Preparar a base para evolução com reuso, manutenção e CI
 
 ## Fluxos automatizados
-Atualmente, o projeto cobre os seguintes cenários E2E:
+
+Atualmente o projeto cobre fluxos críticos E2E da aplicação SauceDemo, incluindo:
 
 - Login com credenciais válidas
 - Adição de produto ao carrinho
 - Finalização de checkout com sucesso
+- Validação de erro ao tentar continuar o checkout sem preencher os campos obrigatórios
+
+## Execução validada
+Execução validada no Playwright em:
+- Chromium
+- Firefox
+- WebKit
 
 ## Cenários implementados
 - **CT-E2E-001** — Login com credenciais válidas
@@ -93,6 +101,7 @@ npx playwright show-report
 ## Cobertura atual
 A suíte atual valida os seguintes comportamentos:
 
+
 ### Login
 - acesso à página de login
 - preenchimento de credenciais válidas
@@ -113,6 +122,7 @@ A suíte atual valida os seguintes comportamentos:
 - preenchimento dos dados obrigatórios
 - validação da etapa de revisão
 - finalização da compra com sucesso
+- Validação de fluxo negativo no checkout ao tentar continuar sem preencher os campos obrigatórios
 
 ## Execução validada
 Os cenários foram executados com sucesso nos navegadores configurados no Playwright:
