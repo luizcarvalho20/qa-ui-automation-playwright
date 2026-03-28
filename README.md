@@ -3,15 +3,16 @@
 ## Sobre o projeto
 Projeto prático de automação de testes de interface com Playwright, com foco na validação de fluxos end-to-end (E2E) em uma aplicação web de e-commerce.
 
-A proposta deste repositório é construir uma base sólida de automação UI com cenários reais, cobrindo fluxos críticos da aplicação, execução cross-browser, geração de relatórios e preparação para evolução com boas práticas e integração contínua.
+A proposta deste repositório é construir uma base sólida de automação UI com cenários reais, cobrindo fluxos críticos da aplicação, execução cross-browser, geração de relatórios, uso de traces para análise de execução e integração contínua com GitHub Actions.
 
 ## Objetivos
 - Estruturar um projeto de automação UI com Playwright
 - Automatizar fluxos críticos end-to-end
 - Validar execuções em diferentes navegadores
 - Gerar relatórios HTML de execução
+- Utilizar traces como apoio à análise e depuração
 - Organizar evidências das execuções realizadas
-- Preparar a base para evolução com reuso, manutenção e CI
+- Integrar a suíte com CI usando GitHub Actions
 
 ## Fluxos automatizados
 Atualmente o projeto cobre fluxos críticos E2E da aplicação SauceDemo, incluindo:
@@ -33,11 +34,12 @@ Atualmente o projeto cobre fluxos críticos E2E da aplicação SauceDemo, inclui
 - Node.js
 - Git
 - GitHub
+- GitHub Actions
 - VS Code
 
 ## Estrutura do projeto
 - `.github/` → arquivos de workflow para automação e integração contínua
-- `evidencias/` → capturas de tela das execuções e relatórios
+- `evidencias/` → capturas de tela das execuções, relatórios e traces
 - `fixtures/` → massa de dados centralizada para os testes
   - `testData.ts` → credenciais, dados de checkout e dados auxiliares de teste
 - `pages/` → Page Objects com ações e elementos reutilizáveis da aplicação
@@ -45,8 +47,8 @@ Atualmente o projeto cobre fluxos críticos E2E da aplicação SauceDemo, inclui
   - `InventoryPage.ts` → ações da tela de produtos
   - `CartPage.ts` → ações da tela de carrinho
   - `CheckoutPage.ts` → ações da tela de checkout
-- `playwright-report/` → relatório HTML gerado após a execução dos testes
-- `test-results/` → artefatos gerados durante as execuções
+- `playwright-report/` → relatório HTML gerado após a execução da suíte
+- `test-results/` → artefatos gerados durante as execuções, como traces, screenshots e vídeos em falhas
 - `tests/` → arquivos de testes automatizados
   - `login.spec.ts` → cenário de login válido
   - `cart.spec.ts` → cenário de adição de produto ao carrinho
@@ -66,6 +68,9 @@ Práticas adotadas:
 - Reutilização de ações por meio de Page Objects
 - Redução de duplicação de código
 - Organização do projeto para facilitar escalabilidade
+- Geração de relatório HTML para análise pós-execução
+- Uso de trace viewer para apoio à investigação de execuções
+- Execução automatizada em pipeline de CI com GitHub Actions
 
 ## Instalação
 Após clonar o repositório, instale as dependências com:
@@ -109,6 +114,11 @@ npx playwright test --ui
 npx playwright show-report
 ```
 
+### Abrir um trace no Trace Viewer
+```bash
+npx playwright show-trace test-results/<arquivo-trace>.zip
+```
+
 ## Cobertura atual
 
 ### Login
@@ -142,6 +152,28 @@ Os cenários foram executados com sucesso nos navegadores configurados no Playwr
 
 Com isso, o projeto demonstra execução cross-browser de fluxos críticos E2E.
 
+## Relatórios e rastreabilidade
+O projeto utiliza recursos nativos do Playwright para ampliar a visibilidade sobre as execuções e facilitar a análise dos testes automatizados.
+
+Recursos utilizados:
+- Relatório HTML para visão consolidada da suíte
+- Execução cross-browser
+- Trace Viewer para inspeção detalhada da execução
+- Organização de evidências visuais das execuções realizadas
+
+Esses recursos fortalecem o projeto tanto para fins de depuração quanto para apresentação em portfólio técnico.
+
+## Integração contínua (CI)
+O projeto possui integração contínua com GitHub Actions para execução automatizada da suíte de testes.
+
+A pipeline está configurada para:
+- executar os testes a cada `push` na branch principal
+- executar os testes em `pull requests`
+- permitir execução manual do workflow
+- disponibilizar artefatos da execução, como `playwright-report` e `test-results`
+
+Com isso, o repositório passa a demonstrar uma prática importante de automação moderna: validação contínua da suíte em ambiente de CI.
+
 ## Evidências
 - `evidencias/EV-UI-001-testes-iniciais-html.png`
 - `evidencias/EV-UI-002-testes-iniciais-ui.png`
@@ -151,16 +183,12 @@ Com isso, o projeto demonstra execução cross-browser de fluxos críticos E2E.
 - `evidencias/EV-UI-006-test-checkout.png`
 - `evidencias/EV-UI-007-tests-login-cart-checkout.png`
 - `evidencias/EV-UI-008-test-checkout-negativo-campos-obrigatorios.png`
-
-## Evoluções previstas
-- adicionar cenário de remoção de item do carrinho
-- adicionar cenários negativos de login
-- ampliar cobertura de validações no checkout
-- integrar execução automática com GitHub Actions
-- evoluir a suíte com novas camadas de reuso conforme o projeto crescer
+- `evidencias/EV-UI-009-execucao-terminal.png`
+- `evidencias/EV-UI-010-relatorio-html.png`
+- `evidencias/EV-UI-011-trace-viewer.png`
 
 ## Status
-Projeto funcional de automação UI com Playwright, cobrindo fluxos críticos de login, carrinho e checkout com execução cross-browser, Page Objects, dados centralizados e geração de relatório HTML.
+Projeto funcional de automação UI com Playwright, cobrindo fluxos críticos de login, carrinho e checkout com execução cross-browser, Page Objects, dados centralizados, geração de relatório HTML, uso de trace viewer e integração contínua com GitHub Actions.
 
 ## Autor
 Luiz Felipe Carvalho
